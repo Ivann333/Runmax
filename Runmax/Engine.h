@@ -2,6 +2,8 @@
 #include "Libs.h"
 #include"AssetManager.h"
 #include "WorldCreater.h"
+#include "Player.h"
+
 
 class Engine
 {
@@ -25,10 +27,15 @@ private:
 	sf::VertexArray world;
 	sf::IntRect worldsize;
 
+	Player player;
 	
+	void update(sf::Time const& deltaTime);
 
 	void draw();
 	void input();
+
+
+	
 	
 };
 
