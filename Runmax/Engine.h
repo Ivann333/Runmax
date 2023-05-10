@@ -3,7 +3,7 @@
 #include"AssetManager.h"
 #include "WorldCreater.h"
 #include "Player.h"
-
+#include "Enemy.h"
 
 class Engine
 {
@@ -29,12 +29,14 @@ private:
 
 	Player player;
 	
+	Enemy monster;
+
 	void update(sf::Time const& deltaTime);
 
 	void draw();
 	void input();
 
-
+	int** arr;
 	
 	
 };

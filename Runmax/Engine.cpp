@@ -4,7 +4,7 @@
 
 Engine::Engine()
 {
-
+	arr = worldcreate();
 	
 
 }
@@ -89,7 +89,7 @@ void Engine::input()
 void Engine::update(sf::Time const& deltaTime)
 {
 	player.update(deltaTime);
-
+	monster.update(deltaTime);
 
 }
 
@@ -98,11 +98,10 @@ void Engine::draw()
 {
 	window->clear();
 
-	int** arr;
-	arr = worldcreate();
+
 	worldDraw(arr, *window);
 	
-
+	window->draw(monster.get_enemy_sprite());
 	window->draw(player.get_player_Sprite());
 
 	window->display();
