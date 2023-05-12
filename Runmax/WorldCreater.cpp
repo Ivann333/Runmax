@@ -12,6 +12,7 @@ const int h = 50; // world height
 sf::Texture maptexture;
 sf::Sprite world;
 
+
 int** worldcreate()
 {
 
@@ -86,3 +87,14 @@ void printArray(int** arr)
 }
 
 
+sf::IntRect getWorldSize()
+{
+	sf::IntRect worldsize;
+	worldsize.width = w * 32;
+	worldsize.height = h * 32;
+	
+
+	return worldsize;
+
+
+}

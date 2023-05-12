@@ -1,12 +1,12 @@
+#pragma once
 #include "Engine.h"
-
+#include "Creater.h"
 
 
 Engine::Engine()
 {
 	arr = worldcreate();
-	
-
+	worldsize = getWorldSize();
 }
 
 
@@ -42,6 +42,32 @@ void Engine::input()
 			if (event.key.code == sf::Keyboard::D)
 			{
 				player.moveRight();
+			}
+
+			if (event.key.code == sf::Keyboard::Right)
+			{
+				window->setView(mainView);
+				mainView.move(20.f, 0);
+			}
+
+			if (event.key.code == sf::Keyboard::Left)
+			{
+				window->setView(mainView);
+				mainView.move(-20.f, 0);
+			}
+			if (event.key.code == sf::Keyboard::Up)
+			{
+				window->setView(mainView);
+				mainView.move(0, -20.f);
+			}
+			if (event.key.code == sf::Keyboard::Down)
+			{
+				window->setView(mainView);
+				mainView.move(0, 20.f);
+			}
+			if (event.key.code == sf::Keyboard::Space)
+			{
+				
 			}
 
 			break;
@@ -89,7 +115,10 @@ void Engine::input()
 void Engine::update(sf::Time const& deltaTime)
 {
 	player.update(deltaTime);
-	monster.update(deltaTime);
+	for (int i = 0; i < monster.size(); i++)
+	{
+		monster[i].update(deltaTime);
+	}
 
 }
 
@@ -97,12 +126,16 @@ void Engine::update(sf::Time const& deltaTime)
 void Engine::draw()
 {
 	window->clear();
-
-
-	worldDraw(arr, *window);
+	window->setView(mainView);
 	
-	window->draw(monster.get_enemy_sprite());
+	worldDraw(arr, *window);
+
 	window->draw(player.get_player_Sprite());
+
+	for (int i = 0; i < monster.size(); i++) {
+
+		 window->draw(monster[i].get_enemy_sprite());
+	}
 
 	window->display();
 
@@ -123,6 +156,8 @@ void Engine::run()
 	arr = worldcreate();
 
 	printArray(arr);
+	
+	createHorde(5, monster, worldsize, sf::Vector2i(0, 1));
 
 
 	while (window->isOpen())

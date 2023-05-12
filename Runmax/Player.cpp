@@ -3,7 +3,9 @@
 
 Player::Player()
 {
-	spawn();
+
+
+	spawn(3520, 1500);
 
 	auto& idle = player_anim.CreateAnimation("idle", "image/idle.png", sf::seconds(0.5), true);
 	idle.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
@@ -14,25 +16,29 @@ Player::Player()
 	auto& runLeft = player_anim.CreateAnimation("runLeft", "image/spriteRunLeft.png", sf::seconds(0.5), true);
 	runLeft.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
 
-
+	player_sprite.setOrigin(player_sprite.getGlobalBounds().width / 2, player_sprite.getGlobalBounds().height / 2);
 	player_anim.Update(sf::seconds(0));
-	player_sprite.setPosition(player_position);
 
 }
 
+sf::Vector2f Player::getCenter() const
+{
+	return player_position;
+}
 
 sf::Sprite Player::get_player_Sprite() const
 {
 	return player_sprite;
 }
 
-void Player::spawn()
+void Player::spawn(int x, int y)
 {
 
 	doNothingAnim();
-	player_position.x = static_cast<float>(10);
-	player_position.y = static_cast<float>(10);
+	player_position.x = static_cast<float>(x / 2);
+	player_position.y = static_cast<float>(y/2);
 
+	player_sprite.setPosition(player_position);
 
 
 }

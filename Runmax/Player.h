@@ -1,6 +1,8 @@
 #pragma once
 #include "Libs.h"
 #include "Animator.h"
+#include "WorldCreater.h"
+
 
 class Player
 {
@@ -8,7 +10,7 @@ public:
 	 Player();
 	 sf::Sprite get_player_Sprite() const;
 	 void update(sf::Time deltaTime);
-	 void spawn();
+	 void spawn(int x, int y);
 
 
 	 void moveLeft();
@@ -23,6 +25,7 @@ public:
 	 void setStepx(float x);
 	 void setStepy(float y);
 
+	 sf::Vector2f getCenter() const;
 
 private:
 	const int k_health = 100;
@@ -32,6 +35,7 @@ private:
 
 	sf::Sprite player_sprite;
 	sf::Time time_moving;
+
 
 	Animator player_anim = Animator(player_sprite);
 

@@ -1,5 +1,7 @@
+#pragma once
 #include "Libs.h"
 #include "AssetManager.h"
+
 
 
 class Animator

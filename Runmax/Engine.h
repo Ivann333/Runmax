@@ -4,6 +4,7 @@
 #include "WorldCreater.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Bullet.h"
 
 class Engine
 {
@@ -27,9 +28,12 @@ private:
 	sf::VertexArray world;
 	sf::IntRect worldsize;
 
+	std::deque<Enemy> monster;
+
+	std::deque<Bullet> bullet;
+
 	Player player;
-	
-	Enemy monster;
+
 
 	void update(sf::Time const& deltaTime);
 
@@ -37,7 +41,7 @@ private:
 	void input();
 
 	int** arr;
-	
+	int currentBullet = 0;
 	
 };
 
