@@ -33,7 +33,7 @@ private:
 	std::deque<Bullet> bullet;
 
 	Player player;
-
+	int bulletnum = 0;
 
 	void update(sf::Time const& deltaTime);
 

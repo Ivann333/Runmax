@@ -7,6 +7,8 @@ Engine::Engine()
 {
 	arr = worldcreate();
 	worldsize = getWorldSize();
+	for (int i = 0; i<5;i++)
+		bullet.emplace_back();
 }
 
 
@@ -25,23 +27,30 @@ void Engine::input()
 
 			if (event.key.code == sf::Keyboard::W)
 			{
+				
 				player.moveUp();
+				player.setPlayerRotateY (1);
+
 			}
 
 			if (event.key.code == sf::Keyboard::S)
 			{
 				player.moveDown();
+				player.setPlayerRotateY(-1);
+
 			}
 
 			if (event.key.code == sf::Keyboard::A)
 			{
 				player.moveLeft();
+				player.setPlayerRotateX(-1);
 			}
 
 
 			if (event.key.code == sf::Keyboard::D)
 			{
 				player.moveRight();
+				player.setPlayerRotateX(1);
 			}
 
 			if (event.key.code == sf::Keyboard::Right)
@@ -67,7 +76,9 @@ void Engine::input()
 			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
-				
+				bulletnum++;
+				bullet[bulletnum].shoot(player.get_player_Sprite().getPosition().x, player.get_player_Sprite().getPosition().y, player.getPlayerRotateX(), player.getPlayerRotateY());
+
 			}
 
 			break;
@@ -76,26 +87,31 @@ void Engine::input()
 			if (event.key.code == sf::Keyboard::W) 
 			{
 				player.setStepy(0);
-				player.doNothingAnim();
+				player.setPlayerRotateY(0);
+				player.doNothingAnim(1);
 			}
 			if (event.key.code == sf::Keyboard::S)
 			{
 				player.setStepy(0);
-				player.doNothingAnim();
-			
+				player.setPlayerRotateX(0);
+				player.doNothingAnim(1);
+				
+
 			}
 
 			if (event.key.code == sf::Keyboard::A) 
 			{
+				player.setPlayerRotateX(0);
 				player.setStepx(0);
-				player.doNothingAnim();
+				player.doNothingAnim(2);
 				
 			}
 			if (event.key.code == sf::Keyboard::D)
 			{
+				player.setPlayerRotateX(0);
 				player.setStepx(0);
-				player.doNothingAnim();
-
+				player.doNothingAnim(1);
+				
 			}
 
 			break;
@@ -120,6 +136,12 @@ void Engine::update(sf::Time const& deltaTime)
 		monster[i].update(deltaTime);
 	}
 
+	for (int i=0; i < 5;i++)
+	{
+		if (bullet[i].get_fly())
+			bullet[i].update(deltaTime);
+	}
+
 }
 
 
@@ -135,6 +157,14 @@ void Engine::draw()
 	for (int i = 0; i < monster.size(); i++) {
 
 		 window->draw(monster[i].get_enemy_sprite());
+	}
+	for (int i=0; i < 5;i++)
+	{
+		if (bullet[i].get_fly())
+		{
+			window->draw(bullet[i].get_bullet_Sprite());
+		}
+
 	}
 
 	window->display();

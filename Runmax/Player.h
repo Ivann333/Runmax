@@ -19,7 +19,13 @@ public:
 	 void moveDown();
 
 
-	 void doNothingAnim();
+	 void doNothingAnim(int status);
+
+	 void setPlayerRotateX(float x);
+	 void setPlayerRotateY(float y);
+
+	 float getPlayerRotateX()const;
+	 float getPlayerRotateY()const;
 
 
 	 void setStepx(float x);
@@ -42,6 +48,8 @@ private:
 	float stepx = 0.0f;      
 	float stepy = 0.0f;
 
+	float player_rotateX;
+	float player_rotateY;
 	
 	
 };

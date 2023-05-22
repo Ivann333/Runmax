@@ -5,17 +5,21 @@ class Bullet
 {
 public:
 	Bullet();
-	void update(float elapsedTime);
-	void shoot(float start_x, float start_y, float target_x, float target_y);
+	void update(sf::Time deltaTime);
+	void shoot(float start_x, float start_y, float bulletRotatex, float bulletRotatey);
 	sf::Sprite get_bullet_Sprite() const;
 	bool get_fly() const;
-	void spawn(sf::Vector2f playerPosition);
-		
+	void bullet_setStepx(float x);
+	void bullet_setStepy(float y);
+
+
 private:
 
+	float bullet_stepx = 0.0f;
+	float bullet_stepy = 0.0f;
 
 	sf::Vector2f bullet_position;
-	bool bulletInFlight;
+	bool bulletInFlight = false;
 	float bulletSpeed = 1000;
 	sf::Sprite bullet_sprite;
 	Animator bullet_anim = Animator(bullet_sprite);

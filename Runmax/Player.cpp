@@ -7,8 +7,12 @@ Player::Player()
 
 	spawn(3520, 1500);
 
-	auto& idle = player_anim.CreateAnimation("idle", "image/idle.png", sf::seconds(0.5), true);
-	idle.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
+	auto& idleright = player_anim.CreateAnimation("idleright", "image/idle.png", sf::seconds(0.5), true);
+	idleright.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
+
+	auto& idleleft = player_anim.CreateAnimation("idleleft", "image/idleleft.png", sf::seconds(0.5), true);
+	idleleft.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
+
 
 	auto& runRight = player_anim.CreateAnimation("runRight", "image/spriteRunRight.png", sf::seconds(0.5), true);
 	runRight.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
@@ -16,8 +20,31 @@ Player::Player()
 	auto& runLeft = player_anim.CreateAnimation("runLeft", "image/spriteRunLeft.png", sf::seconds(0.5), true);
 	runLeft.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
 
-	player_sprite.setOrigin(player_sprite.getGlobalBounds().width / 2, player_sprite.getGlobalBounds().height / 2);
-	player_anim.Update(sf::seconds(0));
+	
+	player_anim.Update(sf::seconds(0)); 
+	
+}
+
+void Player::setPlayerRotateX(float x)
+{
+	player_rotateX = x;
+}
+void Player::setPlayerRotateY(float y)
+{
+	player_rotateY = y;
+}
+
+
+
+float Player::getPlayerRotateX() const
+{
+	return player_rotateX;
+
+}
+
+float Player::getPlayerRotateY() const
+{
+	return player_rotateY;
 
 }
 
@@ -34,8 +61,8 @@ sf::Sprite Player::get_player_Sprite() const
 void Player::spawn(int x, int y)
 {
 
-	doNothingAnim();
-	player_position.x = static_cast<float>(x / 2);
+	doNothingAnim(1);
+	player_position.x = static_cast<float>(x/ 2);
 	player_position.y = static_cast<float>(y/2);
 
 	player_sprite.setPosition(player_position);
@@ -45,6 +72,8 @@ void Player::spawn(int x, int y)
 
 void Player::update(sf::Time deltaTime)
 {
+
+
 	time_moving += deltaTime;
 
 	player_anim.Update(deltaTime);
@@ -82,7 +111,6 @@ void Player::moveDown()
 }
 
 
-
 void Player::setStepx(float x)
 {
 	stepx = x;
@@ -94,8 +122,13 @@ void Player::setStepy(float y)
 	stepy = y;
 }
 
-void Player::doNothingAnim()
+void Player::doNothingAnim(int status)
 {
-	player_anim.SwitchAnimation("idle");
+	switch (status)
+	{
+	case 1: player_anim.SwitchAnimation("idleright"); break;
+	case 2: player_anim.SwitchAnimation("idleleft"); break;
+	}
+	
 
 }
