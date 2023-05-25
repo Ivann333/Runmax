@@ -35,6 +35,8 @@ private:
 	Player player;
 	int bulletnum = 0;
 
+	int numMonster;
+
 	void update(sf::Time const& deltaTime);
 
 	void draw();

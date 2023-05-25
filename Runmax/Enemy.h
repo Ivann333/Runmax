@@ -12,12 +12,18 @@ public:
 	void spawn(float spawn_x,float spawn_y, int type);
 	void update(sf::Time deltaTime);
 	sf::FloatRect getPosition();
+	bool getEnemyAlive();
+	void Dead();
 
 private:
 	const float enemy1_SPEED = 1.0f;
 	const float enemy1_HEALTH = 1;
 
 	sf::Sprite enemy_sprite;
+
+	bool EnemyAlive;
+
+
 
 	sf::Vector2f enemy_position;
 

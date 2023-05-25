@@ -9,6 +9,7 @@ Engine::Engine()
 	worldsize = getWorldSize();
 	for (int i = 0; i<5;i++)
 		bullet.emplace_back();
+	numMonster = 5;
 }
 
 
@@ -27,30 +28,26 @@ void Engine::input()
 
 			if (event.key.code == sf::Keyboard::W)
 			{
-				
 				player.moveUp();
-				player.setPlayerRotateY (1);
-
 			}
 
 			if (event.key.code == sf::Keyboard::S)
 			{
 				player.moveDown();
-				player.setPlayerRotateY(-1);
-
 			}
 
 			if (event.key.code == sf::Keyboard::A)
 			{
+			
 				player.moveLeft();
-				player.setPlayerRotateX(-1);
 			}
 
 
 			if (event.key.code == sf::Keyboard::D)
 			{
+
 				player.moveRight();
-				player.setPlayerRotateX(1);
+				player.get_player_Sprite().setRotation(0);
 			}
 
 			if (event.key.code == sf::Keyboard::Right)
@@ -76,8 +73,12 @@ void Engine::input()
 			}
 			if (event.key.code == sf::Keyboard::Space)
 			{
+
 				bulletnum++;
-				bullet[bulletnum].shoot(player.get_player_Sprite().getPosition().x, player.get_player_Sprite().getPosition().y, player.getPlayerRotateX(), player.getPlayerRotateY());
+				player.shootAnim();
+				bullet[bulletnum].shoot(player.get_player_Sprite().getPosition().x, player.get_player_Sprite().getPosition().y, player.getPlayerRotation());
+				
+
 
 			}
 
@@ -87,30 +88,29 @@ void Engine::input()
 			if (event.key.code == sf::Keyboard::W) 
 			{
 				player.setStepy(0);
-				player.setPlayerRotateY(0);
-				player.doNothingAnim(1);
+				player.doNothingAnim();
 			}
 			if (event.key.code == sf::Keyboard::S)
 			{
 				player.setStepy(0);
-				player.setPlayerRotateX(0);
-				player.doNothingAnim(1);
+				
+				player.doNothingAnim();
 				
 
 			}
 
 			if (event.key.code == sf::Keyboard::A) 
 			{
-				player.setPlayerRotateX(0);
+				
 				player.setStepx(0);
-				player.doNothingAnim(2);
+				player.doNothingAnim();
 				
 			}
 			if (event.key.code == sf::Keyboard::D)
 			{
-				player.setPlayerRotateX(0);
+				
 				player.setStepx(0);
-				player.doNothingAnim(1);
+				player.doNothingAnim();
 				
 			}
 
@@ -142,6 +142,24 @@ void Engine::update(sf::Time const& deltaTime)
 			bullet[i].update(deltaTime);
 	}
 
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < numMonster; j++)
+		{
+			if (bullet[i].get_fly() && monster[j].getEnemyAlive())
+			{
+				if (bullet[i].getPosition().intersects
+				(monster[j].getPosition()))
+				{
+					
+					bullet[i].stop();
+					monster[j].Dead();
+				
+				}
+			}
+		}
+	}
+
 }
 
 
@@ -155,8 +173,7 @@ void Engine::draw()
 	window->draw(player.get_player_Sprite());
 
 	for (int i = 0; i < monster.size(); i++) {
-
-		 window->draw(monster[i].get_enemy_sprite());
+		if(monster[i].getEnemyAlive()) window->draw(monster[i].get_enemy_sprite());
 	}
 	for (int i=0; i < 5;i++)
 	{
@@ -187,7 +204,7 @@ void Engine::run()
 
 	printArray(arr);
 	
-	createHorde(5, monster, worldsize, sf::Vector2i(0, 1));
+	createHorde(numMonster, monster, worldsize, sf::Vector2i(0, 1));
 
 
 	while (window->isOpen())

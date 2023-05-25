@@ -7,46 +7,25 @@ Player::Player()
 
 	spawn(3520, 1500);
 
-	auto& idleright = player_anim.CreateAnimation("idleright", "image/idle.png", sf::seconds(0.5), true);
-	idleright.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
-
-	auto& idleleft = player_anim.CreateAnimation("idleleft", "image/idleleft.png", sf::seconds(0.5), true);
-	idleleft.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
+	auto& HeroIdle = player_anim.CreateAnimation("HeroIdle", "image/HeroIdleSprite.png", sf::seconds(0.5), true);
+	HeroIdle.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 100), 4, 1);
 
 
-	auto& runRight = player_anim.CreateAnimation("runRight", "image/spriteRunRight.png", sf::seconds(0.5), true);
-	runRight.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
-
-	auto& runLeft = player_anim.CreateAnimation("runLeft", "image/spriteRunLeft.png", sf::seconds(0.5), true);
-	runLeft.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 200), 4, 1);
-
+	auto& HeroRun = player_anim.CreateAnimation("HeroRun", "image/HeroRunSprite.png", sf::seconds(0.5), true);
+	HeroRun.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(64, 100), 4, 1);
 	
+	auto& HeroAttack = player_anim.CreateAnimation("HeroAttack", "image/HeroAttack2Sprite.png", sf::seconds(0.7), false);
+	HeroAttack.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(93, 100), 5, 1);
+
 	player_anim.Update(sf::seconds(0)); 
-	
+	player_sprite.setOrigin(player_sprite.getGlobalBounds().width / 2, player_sprite.getGlobalBounds().height / 2);
+
+
+
+	rotation = 0;
+	shooting = false;
 }
 
-void Player::setPlayerRotateX(float x)
-{
-	player_rotateX = x;
-}
-void Player::setPlayerRotateY(float y)
-{
-	player_rotateY = y;
-}
-
-
-
-float Player::getPlayerRotateX() const
-{
-	return player_rotateX;
-
-}
-
-float Player::getPlayerRotateY() const
-{
-	return player_rotateY;
-
-}
 
 sf::Vector2f Player::getCenter() const
 {
@@ -61,7 +40,7 @@ sf::Sprite Player::get_player_Sprite() const
 void Player::spawn(int x, int y)
 {
 
-	doNothingAnim(1);
+	doNothingAnim();
 	player_position.x = static_cast<float>(x/ 2);
 	player_position.y = static_cast<float>(y/2);
 
@@ -72,14 +51,35 @@ void Player::spawn(int x, int y)
 
 void Player::update(sf::Time deltaTime)
 {
-
-
 	time_moving += deltaTime;
 
 	player_anim.Update(deltaTime);
 
 	player_sprite.move(stepx, stepy);
+
 }
+
+bool Player::getShooting() const
+{
+	return shooting;
+}
+
+void Player::shootAnim()
+{
+
+	shooting = true;
+	player_anim.SwitchAnimation("HeroAttack");
+	
+	
+	
+}
+
+
+float Player::getPlayerRotation()
+{
+	return rotation;
+}
+
 
 
 
@@ -87,28 +87,32 @@ void Player::moveLeft()
 {
 	
 	stepx = -5.0f;
-	if (player_anim.GetCurrentAnimationName() != "runLeft") player_anim.SwitchAnimation("runLeft");
-
+	if (player_anim.GetCurrentAnimationName() != "HeroRun") player_anim.SwitchAnimation("HeroRun");
+	player_sprite.setScale(-1.f, 1.f);
+	rotation = 180;
 }
 void Player::moveRight()
 {
-	
 	stepx = 5.0f;
-	if (player_anim.GetCurrentAnimationName() != "runRight") player_anim.SwitchAnimation("runRight");
+	if (player_anim.GetCurrentAnimationName() != "HeroRun") player_anim.SwitchAnimation("HeroRun");
+	player_sprite.setScale(1.f, 1.f);
+	rotation = 0;
 }
 void Player::moveUp()
 {
 
 	stepy = -5.0f;
-	if (player_anim.GetCurrentAnimationName() != "runLeft") player_anim.SwitchAnimation("runLeft");
+	if (player_anim.GetCurrentAnimationName() != "HeroRun") player_anim.SwitchAnimation("HeroRun");
 	
 }
 void Player::moveDown()
 {
 	stepy = 5.0f;
-	if (player_anim.GetCurrentAnimationName() != "runRight") player_anim.SwitchAnimation("runRight");
+	if (player_anim.GetCurrentAnimationName() != "HeroRun") player_anim.SwitchAnimation("HeroRun");
 	
 }
+
+
 
 
 void Player::setStepx(float x)
@@ -122,13 +126,7 @@ void Player::setStepy(float y)
 	stepy = y;
 }
 
-void Player::doNothingAnim(int status)
+void Player::doNothingAnim()
 {
-	switch (status)
-	{
-	case 1: player_anim.SwitchAnimation("idleright"); break;
-	case 2: player_anim.SwitchAnimation("idleleft"); break;
-	}
-	
-
+	if (player_anim.GetCurrentAnimationName() != "HeroIdle") player_anim.SwitchAnimation("HeroIdle");
 }

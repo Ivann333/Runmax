@@ -18,22 +18,25 @@ public:
 	 void moveUp();
 	 void moveDown();
 
+	 bool getShooting() const;
 
-	 void doNothingAnim(int status);
-
-	 void setPlayerRotateX(float x);
-	 void setPlayerRotateY(float y);
-
-	 float getPlayerRotateX()const;
-	 float getPlayerRotateY()const;
-
+	 void doNothingAnim();
 
 	 void setStepx(float x);
 	 void setStepy(float y);
 
+	 void shootAnim();
+		 
+	 float getPlayerRotation();
+
 	 sf::Vector2f getCenter() const;
 
 private:
+
+	bool shooting;
+
+	float rotation;
+
 	const int k_health = 100;
 	const int k_speed = 2;
 

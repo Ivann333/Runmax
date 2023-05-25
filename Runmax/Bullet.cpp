@@ -3,40 +3,38 @@
 Bullet::Bullet()
 {
 
-	auto& bulletRight = bullet_anim.CreateAnimation("bulletRight", "image/bulletright.png", sf::seconds(1), true);
-	bulletRight.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(79, 200), 4, 1);
+	auto& BulletFly = bullet_anim.CreateAnimation("BulletFly", "image/BulletFlightSprite.png", sf::seconds(1), true);
+	BulletFly.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(58, 11), 4, 1);
 
-	auto& bulletLeft = bullet_anim.CreateAnimation("bulletLeft", "image/bulletleft.png", sf::seconds(1), true);
-	bulletLeft.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(79, 200), 4, 1);
+	
+}
+	
+sf::FloatRect Bullet::getPosition()
+{
+	auto myGlobalBounds = sf::FloatRect(bullet_sprite.getGlobalBounds().left + 40, bullet_sprite.getGlobalBounds().top + 40,
+		bullet_sprite.getGlobalBounds().width - 80, bullet_sprite.getGlobalBounds().height - 80);
 
+	return myGlobalBounds;
+}
+void Bullet::stop()
+{
+	bulletInFlight = false;
 }
 
-void Bullet::shoot(float start_x, float start_y, float bulletRotatex, float bulletRotatey)
+void Bullet::shoot(float start_x, float start_y, int rotation)
 {
 
 	bullet_position.x = start_x;
 	bullet_position.y = start_y;
-	bullet_sprite.setPosition(bullet_position);
 	
-	if (bulletRotatex < 0) {
-		
-		if (bullet_anim.GetCurrentAnimationName() != "bulletLeft") bullet_anim.SwitchAnimation("bulletLeft");
-		bullet_stepx = -7.0f;
-	}
-		
-	if (bulletRotatex > 0) {
 	
-		if (bullet_anim.GetCurrentAnimationName() != "bulletRight") bullet_anim.SwitchAnimation("bulletRight");
-		bullet_stepx = 7.0f;
+	switch (rotation)
+	{
+	case 0: bullet_sprite.setRotation(0); bullet_stepx = 5.0f; bullet_stepy = 0; break;
+	case 180: bullet_sprite.setRotation(0); bullet_sprite.setScale(-1.f, 1.f); bullet_stepx = -5.0f; bullet_stepy = 0;break;
 	}
-		
-	if (bulletRotatey > 0)
-		bullet_stepy = -7.0f;
-	if (bulletRotatey < 0)
-		bullet_stepy = 7.0f;
-	if (bulletRotatey == 0)
-		bullet_stepy = 0;
 
+	bullet_sprite.setPosition(bullet_position);
 	bulletInFlight = true;
 
 }

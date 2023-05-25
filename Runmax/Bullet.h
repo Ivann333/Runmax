@@ -6,12 +6,13 @@ class Bullet
 public:
 	Bullet();
 	void update(sf::Time deltaTime);
-	void shoot(float start_x, float start_y, float bulletRotatex, float bulletRotatey);
+	void shoot(float start_x, float start_y, int rotation);
 	sf::Sprite get_bullet_Sprite() const;
 	bool get_fly() const;
 	void bullet_setStepx(float x);
 	void bullet_setStepy(float y);
-
+	sf::FloatRect getPosition();
+	void stop();
 
 private:
 
