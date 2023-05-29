@@ -17,8 +17,9 @@ private:
 
 	AssetManager manager;
 
+	sf::Vector2i winPosition;
 	
-	sf::Vector2f m_resolution = sf::Vector2f(static_cast<float>(sf::VideoMode::getDesktopMode().width),
+	sf::Vector2f m_resolution = sf::Vector2f(static_cast<float>(sf::VideoMode::getDesktopMode().width + 9),
 		static_cast<float>(sf::VideoMode::getDesktopMode().height));
 
 	sf::View mainView = sf::View(sf::FloatRect(0, 0, m_resolution.x, m_resolution.y));

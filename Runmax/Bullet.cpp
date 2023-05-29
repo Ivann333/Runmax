@@ -30,7 +30,7 @@ void Bullet::shoot(float start_x, float start_y, int rotation)
 	
 	switch (rotation)
 	{
-	case 0: bullet_sprite.setRotation(0); bullet_stepx = 5.0f; bullet_stepy = 0; break;
+	case 0: bullet_sprite.setRotation(0); bullet_sprite.setScale(1.f, 1.f); bullet_stepx = 5.0f; bullet_stepy = 0; break;
 	case 180: bullet_sprite.setRotation(0); bullet_sprite.setScale(-1.f, 1.f); bullet_stepx = -5.0f; bullet_stepy = 0;break;
 	}
 

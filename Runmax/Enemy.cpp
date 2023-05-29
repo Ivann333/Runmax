@@ -18,6 +18,7 @@ Enemy::Enemy()
 	enemy1death.AddFrames(sf::Vector2i(0, 0), sf::Vector2i(40, 100), 4, 1);
 
 	EnemyAlive = false;
+	enemyUpdateMove = true;
 }
 
 bool Enemy::getEnemyAlive()
@@ -63,6 +64,7 @@ void Enemy::Dead() {
 	case 0: enemy_anim.SwitchAnimation("enemy1death");break;
 	case 1: enemy_anim.SwitchAnimation("enemy2death");break;
 	}
+	enemyUpdateMove = false;
 }
 
 sf::FloatRect Enemy::getPosition()
@@ -73,8 +75,14 @@ sf::FloatRect Enemy::getPosition()
 	return myGlobalBounds;
 }
 
+sf::Sprite Enemy::get_enemy_sprite() const
+{
+	return enemy_sprite;
+}
 
-void Enemy::update(sf::Time deltaTime)
+
+
+void Enemy::update(sf::Time deltaTime, sf::Vector2f playerPosition, sf::Vector2f resolution)
 {
 
 	enemy_anim.Update(deltaTime);
@@ -84,10 +92,40 @@ void Enemy::update(sf::Time deltaTime)
 		EnemyAlive = false;
 	}
 
-}
+	enemyMoveTime += deltaTime;
 
-sf::Sprite Enemy::get_enemy_sprite() const
-{
-	return enemy_sprite;
+	if (enemyUpdateMove){
+		if (enemyMoveTime > sf::microseconds(1000)) {
+			float playerX = playerPosition.x;
+			float playerY = playerPosition.y;
+			enemyMoveTime = sf::microseconds(0);
+
+			if (playerX > enemy_position.x)
+			{
+				enemy_position.x = enemy_position.x + enemy1_SPEED;
+			}
+			if (playerY > enemy_position.y)
+			{
+				enemy_position.y = enemy_position.y + enemy1_SPEED / (100 / (resolution.y / (resolution.x / 100)));
+
+			}
+			if (playerX < enemy_position.x)
+			{
+				enemy_position.x = enemy_position.x - enemy1_SPEED;
+
+			}
+			if (playerY < enemy_position.y)
+			{
+				enemy_position.y = enemy_position.y - enemy1_SPEED / (100 / (resolution.y / (resolution.x / 100)));
+
+			}
+
+			enemy_sprite.setPosition(enemy_position);
+
+			auto angle = static_cast<float>((atan2(playerY - enemy_position.y, playerX - enemy_position.x) * 180) / 3.141);
+			if (angle >= 90 and angle <= 270) enemy_sprite.setScale(-1.f, 1.f);
+			else enemy_sprite.setScale(1.f, 1.f);
+		}
+	}
 }
 

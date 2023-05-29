@@ -25,20 +25,26 @@ public:
 	 void setStepx(float x);
 	 void setStepy(float y);
 
+	 float getStepX() const;
+	 float getStepY() const;
+
+
+
 	 void shootAnim();
 		 
 	 float getPlayerRotation();
 
-	 sf::Vector2f getCenter() const;
+	 sf::Vector2f getPosition() const;
 
 private:
+
+	
 
 	bool shooting;
 
 	float rotation;
 
 	const int k_health = 100;
-	const int k_speed = 2;
 
 	sf::Vector2f player_position;
 

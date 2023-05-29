@@ -27,9 +27,21 @@ Player::Player()
 }
 
 
-sf::Vector2f Player::getCenter() const
+float Player::getStepX() const
 {
-	return player_position;
+	return stepx;
+}
+float Player::getStepY()const
+{
+	return stepy;
+}
+
+
+sf::Vector2f Player::getPosition() const
+{
+	
+	return player_sprite.getPosition();
+
 }
 
 sf::Sprite Player::get_player_Sprite() const
@@ -130,3 +142,4 @@ void Player::doNothingAnim()
 {
 	if (player_anim.GetCurrentAnimationName() != "HeroIdle") player_anim.SwitchAnimation("HeroIdle");
 }
+

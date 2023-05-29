@@ -7,9 +7,16 @@ Engine::Engine()
 {
 	arr = worldcreate();
 	worldsize = getWorldSize();
-	for (int i = 0; i<5;i++)
+	for (int i = 0; i<7;i++)
 		bullet.emplace_back();
 	numMonster = 5;
+
+	winPosition.x = -9;
+	winPosition.y = 0;
+
+	window->setPosition(winPosition);
+
+
 }
 
 
@@ -47,7 +54,6 @@ void Engine::input()
 			{
 
 				player.moveRight();
-				player.get_player_Sprite().setRotation(0);
 			}
 
 			if (event.key.code == sf::Keyboard::Right)
@@ -77,7 +83,7 @@ void Engine::input()
 				bulletnum++;
 				player.shootAnim();
 				bullet[bulletnum].shoot(player.get_player_Sprite().getPosition().x, player.get_player_Sprite().getPosition().y, player.getPlayerRotation());
-				
+				if (bulletnum >= 5) bulletnum = 0;
 
 
 			}
@@ -88,31 +94,29 @@ void Engine::input()
 			if (event.key.code == sf::Keyboard::W) 
 			{
 				player.setStepy(0);
-				player.doNothingAnim();
+				if (player.getStepX() == 0 and player.getStepY() == 0) player.doNothingAnim();
+
 			}
 			if (event.key.code == sf::Keyboard::S)
 			{
 				player.setStepy(0);
+				if (player.getStepX() == 0 and player.getStepY() == 0) player.doNothingAnim();
 				
-				player.doNothingAnim();
-				
-
 			}
 
 			if (event.key.code == sf::Keyboard::A) 
 			{
-				
 				player.setStepx(0);
-				player.doNothingAnim();
-				
+				if (player.getStepX() == 0 and player.getStepY() == 0) player.doNothingAnim();
+					
 			}
 			if (event.key.code == sf::Keyboard::D)
 			{
-				
 				player.setStepx(0);
-				player.doNothingAnim();
-				
+				if (player.getStepX() == 0 and player.getStepY() == 0) player.doNothingAnim();
+			
 			}
+			
 
 			break;
 		default:
@@ -130,11 +134,14 @@ void Engine::input()
 
 void Engine::update(sf::Time const& deltaTime)
 {
-	player.update(deltaTime);
+	
+
 	for (int i = 0; i < monster.size(); i++)
 	{
-		monster[i].update(deltaTime);
+		monster[i].update(deltaTime,player.getPosition(), m_resolution);
 	}
+
+	player.update(deltaTime);
 
 	for (int i=0; i < 5;i++)
 	{
